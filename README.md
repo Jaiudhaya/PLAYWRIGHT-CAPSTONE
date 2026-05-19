@@ -1,12 +1,12 @@
 # PLAYWRIGHT CAPSTONE PROJECT
 
-## 📌 Project Overview
+##  Project Overview
 This project is an end-to-end automation testing framework being developed using Playwright.  
 The goal is to automate multiple web services and validate functionality across different browsers.
 
 ---
 
-## 🛠️ Tools 
+##  Tools 
 - Playwright
 - TypeScript / JavaScript
 - Node.js
@@ -14,14 +14,14 @@ The goal is to automate multiple web services and validate functionality across 
 
 ---
 
-## 🌐 Browsers 
+##  Browsers 
 - Chromium
 - Firefox
 - WebKit
 
 ---
 
-## 🧪 Test Coverage
+##  Test Coverage
 - 120+ test cases per service
 - Positive & Negative scenarios
 - Cross-browser testing
