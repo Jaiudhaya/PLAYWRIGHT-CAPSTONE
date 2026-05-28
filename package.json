@@ -1,8 +1,11 @@
 {
   "name": "capstone",
   "version": "1.0.0",
-  "description": "",
+  "description": "This project is an end-to-end automation testing framework being developed using Playwright.  \r The goal is to automate multiple web services and validate functionality across different browsers.",
   "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {},
   "repository": {
     "type": "git",
@@ -18,6 +21,8 @@
   "homepage": "https://github.com/Jaiudhaya/PLAYWRIGHT-CAPSTONE#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.8.0"
+    "@types/node": "^25.9.1",
+    "allure-commandline": "^2.42.0",
+    "allure-playwright": "^3.9.0"
   }
 }
