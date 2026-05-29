@@ -6,7 +6,10 @@
   "directories": {
     "doc": "docs"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "allure:generate": "allure generate allure-results --clean -o allure-report"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jaiudhaya/PLAYWRIGHT-CAPSTONE.git"
