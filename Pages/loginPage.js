@@ -1,4 +1,4 @@
-export class LoginPage {
+class LoginPage {
     constructor(page) {
         this.page = page;
         this.usernameInput = page.locator('input[name="username"]');
@@ -15,3 +15,5 @@ export class LoginPage {
         await this.page.waitForURL(/dashboard/, {timeout: 30000});
     }
 }
+
+module.exports = { LoginPage };
