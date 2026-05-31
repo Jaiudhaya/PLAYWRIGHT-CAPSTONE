@@ -3,9 +3,7 @@ import { LoginPage } from '../../Pages/loginPage';
 import { DashboardPage } from '../../Pages/dashboardPage';
 import { LeavePage } from '../../Pages/leavePage';
 
-test.describe.configure({ mode: 'serial' });
-
-test.describe('Leave Module Tests', () => {
+test.describe('Leave Module Functionality Tests', () => {
     let page;
     let context;
     let loginPage;
@@ -28,88 +26,83 @@ test.describe('Leave Module Tests', () => {
         await context.close();
     });
 
-    test('1.Verify Apply tab navigation', async () => {
+    test('1.Verify Leave module opens', async () => {
+        await expect(page).toHaveURL(/leave/);
+    });
+
+    test('2.Verify Apply page opens', async () => {
         await leavePage.applyTab.click();
         await expect(page).toHaveURL(/applyLeave/);
     });
 
-    test('2.Verify My Leave tab navigation', async () => {
+    test('3.Verify Comment field accepts input', async () => {
+        await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/applyLeave');
+        await expect(leavePage.commentTextarea).toBeVisible();
+        await leavePage.commentTextarea.fill('Leave Comment');
+        await expect(leavePage.commentTextarea).toHaveValue('Leave Comment');
+    });
+
+    test('4.Verify My Leave page opens', async () => {
         await leavePage.myLeaveTab.click();
+        await page.waitForURL(/viewMyLeaveList/,{ timeout: 10000 });
+        //await expect(page).toHaveURL(/viewMyLeaveList/);
+    });
+
+    test('5.Verify From Date field editable', async () => {
+        await leavePage.dateInputs.first().fill('2026-01-01');
+        await expect(leavePage.dateInputs.first()).toHaveValue('2026-01-01');
+    });
+
+    test('6.Verify To Date field editable', async () => {
+        await leavePage.dateInputs.nth(1).fill('2026-01-05');
+        await expect(leavePage.dateInputs.nth(1)).toHaveValue('2026-01-05');
+    });
+
+    test('7.Verify Search button clickable', async () => {
+        await leavePage.myLeaveTab.click();
+        await expect(page).toHaveURL(/viewMyLeaveList/);
+        await leavePage.searchButton.click();
         await expect(page).toHaveURL(/viewMyLeaveList/);
     });
 
-    test('3.Verify Leave List tab navigation', async () => {
-        await leavePage.leaveListTab.click();
+    test('8.Verify Reset button clickable', async () => {
+        await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/viewMyLeaveList');
+        await leavePage.resetButton.click();
+        await expect(page).toHaveURL(/viewMyLeaveList/);
+    });
+
+    test('9.Verify Leave List page opens', async () => {
+        await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/viewLeaveList');
         await expect(page).toHaveURL(/viewLeaveList/);
     });
 
-    test('4.Verify Assign Leave tab navigation', async () => {
-        await leavePage.assignLeaveTab.click();
+    test('10.Verify Employee Name accepts input', async () => {
+        await leavePage.employeeInput.fill('Admin');
+        await expect(leavePage.employeeInput).toHaveValue('Admin');
+    });
+
+    test('11.Verify Status dropdown clickable', async () => {
+        await leavePage.dropdowns.first().click();
+        await expect(leavePage.dropdownOptions.first()).toBeVisible();
+    });
+
+    test('12.Verify Sub Unit dropdown clickable', async () => {
+        await leavePage.dropdowns.nth(1).click();
+        await expect(leavePage.dropdownOptions.first()).toBeVisible();
+    });
+
+    test('13.Verify Assign Leave page opens', async () => {
+        await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/assignLeave');
         await expect(page).toHaveURL(/assignLeave/);
     });
 
-    test('5.Verify Employee Name accepts input', async () => {
-        await leavePage.assignLeaveTab.click();
-        await leavePage.employeeNameInput.fill('John');
-        await expect(leavePage.employeeNameInput).toHaveValue('John');
+    test('14.Verify Assign Leave comment field editable', async () => {
+        await leavePage.commentTextarea.fill('Assign leave note');
+        await expect(leavePage.commentTextarea).toHaveValue('Assign leave note');
     });
 
-    test('6.Verify Leave List Search button works', async () => {
-        await leavePage.leaveListTab.click();
-        await leavePage.searchButton.click();
-        await expect(leavePage.table).toBeVisible();
+    test('15.Verify page refresh keeps session', async () => {
+        await page.reload();
+        await expect(leavePage.leaveHeading).toBeVisible();
     });
-
-    test('7.Verify Leave List Reset button works', async () => {
-        await leavePage.leaveListTab.click();
-        await leavePage.resetButton.click();
-        await expect(leavePage.searchButton).toBeVisible();
-    });
-
-    test('8.Verify Apply page opens successfully', async () => {
-        await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/applyLeave');
-        await expect(page).toHaveURL(/applyLeave/);
-    });
-
-    test('9.Verify Comment field accepts input', async () => {
-        await leavePage.applyTab.click();
-        await leavePage.commentInput.fill('Automation Test Comment');
-        await expect(leavePage.commentInput).toHaveValue('Automation Test Comment');
-    });
-
-    test('10.Verify From Date accepts input', async () => {
-        await leavePage.applyTab.click();
-        await leavePage.fromDateInput.fill('2026-01-01');
-        await expect(leavePage.fromDateInput).toHaveValue('2026-01-01');
-    });
-
-    // test('11.Verify To Date accepts input', async () => {
-    //     await leavePage.applyTab.click();
-    //     await leavePage.toDateInput.fill('2026-01-05');
-    //     await expect(leavePage.toDateInput).toHaveValue('2026-01-05');
-    // });
-
-    // test('12.Verify Apply button validation', async () => {
-    //     await leavePage.applyTab.click();
-    //     await leavePage.applyButton.click();
-    //     await expect(leavePage.requiredMessage).toBeVisible();
-    //});
-
-    test('13.Verify Entitlements menu opens', async () => {
-        await leavePage.entitlementsTab.click();
-        await expect(leavePage.addEntitlementsOption).toBeVisible();
-    });
-
-    test('14.Verify Reports menu opens', async () => {
-        await leavePage.reportsTab.click();
-        await expect(leavePage.reportsTab).toBeVisible();
-    });
-
-    test('15.Verify Configure menu opens', async () => {
-        await leavePage.configureTab.click();
-        await expect(leavePage.configureTab).toBeVisible();
-    });
-
 });
-
-//WORKS :)

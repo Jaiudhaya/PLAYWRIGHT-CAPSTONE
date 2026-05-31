@@ -12,6 +12,12 @@ const login = async (page, user, pass) => {
   await page.getByRole('button', { name: 'Login' }).click();
 };
 
+async function expectInvalidCredentials(page) {
+    const errorMessage = page.locator('.oxd-alert-content-text');
+    await expect(errorMessage).toBeVisible({ timeout: 15000 });
+    await expect(errorMessage).toContainText('Invalid credentials');
+}
+
 test.describe('OrangeHRM Login tests', () => {
 
   test('1. Valid login', async ({ page }) => {
@@ -24,15 +30,14 @@ test.describe('OrangeHRM Login tests', () => {
   test('2. Invalid username', async ({ page }) => {
     await gotoLogin(page);
     await login(page, 'wrong_user', 'admin123');
-    await expect(page.locator('.oxd-alert-content-text')).toHaveText('Invalid credentials');
-  });
+    await expectInvalidCredentials(page);
+});
 
-  test('3. Invalid password', async ({ page }) => {
+test('3. Invalid password', async ({ page }) => {
     await gotoLogin(page);
     await login(page, 'Admin', 'wrong_pass');
-    const errorMessage = page.getByText('Invalid credentials');
-    await expect(errorMessage).toBeVisible({ timeout: 10000 });
-  });
+    await expectInvalidCredentials(page);
+});
 
   test('4. Empty username', async ({ page }) => {
     await gotoLogin(page);
@@ -55,8 +60,8 @@ test.describe('OrangeHRM Login tests', () => {
   test('7. Special characters login', async ({ page }) => {
     await gotoLogin(page);
     await login(page, '@#$%', '@#$%');
-    await expect(page.locator('.oxd-alert-content-text')).toHaveText('Invalid credentials');
-  });
+    await expectInvalidCredentials(page);
+});
 
   test('8. Forgot password visible', async ({ page }) => {
     await gotoLogin(page);
@@ -71,11 +76,12 @@ test.describe('OrangeHRM Login tests', () => {
 
   test('10. Login using Enter key', async ({ page }) => {
     await gotoLogin(page);
-    await login(page, 'Admin', 'admin123');
-    await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/dashboard/);
-    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible({ timeout: 10000 });
-  });
+    await page.locator('input[name="username"]').fill('Admin');
+    await page.locator('input[name="password"]').fill('admin123');
+    await page.locator('input[name="password"]').press('Enter');
+    await page.waitForURL(/dashboard/, {timeout: 15000});
+    await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+});
 
   test('11. Logout', async ({ page }) => {
     await gotoLogin(page);
@@ -87,12 +93,12 @@ test.describe('OrangeHRM Login tests', () => {
 
   test('12.Username field visible', async ({ page }) => {
     await gotoLogin(page);
-    await expect(page.getByRole('textbox', {name: 'Username' })).toBeVisible();
+    await expect(page.locator('input[name="username"]')).toBeVisible();
   });
 
   test('13.Password field visible', async ({ page }) => {
     await gotoLogin(page);
-    await expect(page.getByRole('textbox', { name: 'Password' })).toBeVisible();
+    await expect(page.locator('input[name="password"]')).toBeVisible();
   });
 
   test('14.Login button visible', async ({ page }) => {
@@ -107,7 +113,7 @@ test.describe('OrangeHRM Login tests', () => {
     await expect(username).toHaveValue('Admin');
   });
 
-    test('16.Password field accepts input', async ({ page }) => {
+  test('16.Password field accepts input', async ({ page }) => {
     await gotoLogin(page);
     const password = page.getByRole('textbox', { name: 'Password' });
     await password.fill('admin123');
@@ -123,7 +129,7 @@ test.describe('OrangeHRM Login tests', () => {
   test('18.Refreshes keeps user on login page', async ({ page }) => {
     await gotoLogin(page);
     await page.reload();
-    await expect(page.getByRole('button', { name: 'Login'})).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
   });
 });
 

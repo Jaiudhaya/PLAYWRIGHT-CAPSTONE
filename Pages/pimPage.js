@@ -1,4 +1,4 @@
-export class PimPage {
+class PimPage {
 
     constructor(page) {
         this.page = page;
@@ -23,3 +23,5 @@ export class PimPage {
         this.confirmPasswordAddInput = page.locator('input[type="password"]').last();
     }
 }
+
+module.exports = { PimPage };

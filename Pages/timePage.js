@@ -1,5 +1,7 @@
 export class TimePage {
+
     constructor(page) {
+
         this.page = page;
         this.timeHeading = page.locator('.oxd-topbar-header-breadcrumb-module');
         this.timesheetsTab = page.locator('.oxd-topbar-body-nav-tab-item').filter({ hasText: 'Timesheets' });
@@ -15,3 +17,5 @@ export class TimePage {
         this.dropdownOptions = page.locator('[role="option"]');
     }
 }
+
+module.exports = { TimePage };

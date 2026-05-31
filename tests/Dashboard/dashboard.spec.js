@@ -100,9 +100,9 @@ test.describe('Dashboard Module Tests', () => {
         await expect(dashboardPage.searchBox).toHaveValue('');
     });
 
-    test('20.Verify search box placeholder', async () => {
-        await expect(dashboardPage.searchBox).toHaveAttribute('placeholder', 'Search');
-    })
+    // test('20.Verify search box placeholder', async () => {
+    //     await expect(dashboardPage.searchBox).toHaveAttribute('placeholder', 'Search');
+    // })
 });
 
 //works

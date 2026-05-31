@@ -13,6 +13,8 @@ class DashboardPage {
         this.searchBox = page.locator('input[placeholder="Search"]');
         this.pimMenu = page.getByRole('link', { name: 'PIM' });
         this.timeMenu = page.getByRole('link', { name: 'Time' });
+        this.myInfoMenu = page.getByRole('link', { name: 'My Info' });
+        this.performanceMenu = page.getByRole('link', { name: 'Performance' });
     }
 }
 module.exports = { DashboardPage };

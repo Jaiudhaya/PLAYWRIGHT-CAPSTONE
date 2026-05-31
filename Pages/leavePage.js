@@ -1,53 +1,26 @@
-export class LeavePage {
+class LeavePage {
+
     constructor(page) {
+
         this.page = page;
-
         this.leaveHeading = page.locator('.oxd-topbar-header-breadcrumb-module');
-
         this.applyTab = page.getByRole('link', { name: 'Apply' });
-
         this.myLeaveTab = page.getByRole('link', { name: 'My Leave' });
-
-        this.entitlementsTab = page.getByText('Entitlements');
-
-        this.reportsTab = page.getByText('Reports');
-
-        this.configureTab = page.getByText('Configure');
-
+        this.entitlementsTab = page.getByRole('link', { name: 'Entitlements' });
+        this.reportsTab = page.getByRole('link', { name: 'Reports' });
+        this.configureTab = page.getByRole('link', { name: 'Configure' });
         this.leaveListTab = page.getByRole('link', { name: 'Leave List' });
-
         this.assignLeaveTab = page.getByRole('link', { name: 'Assign Leave' });
-
-        this.leaveTypeDropdown = page.locator('.oxd-select-text').first();
-
-        this.fromDateInput = page.locator('input').nth(1);
-
-        this.toDateInput = page.locator('input').nth(2);
-
-        this.commentInput = page.locator('textarea');
-
-        this.applyButton = page.getByRole('button', { name: 'Apply' });
-
-        this.cancelButton = page.getByRole('button', { name: 'Cancel' });
-
-        this.resetButton = page.getByRole('button', { name: 'Reset' });
-
+        this.dropdowns = page.locator('.oxd-select-text');
+        this.employeeInput = page.getByPlaceholder('Type for hints...').first();
+        this.dateInputs = page.locator('input[placeholder="yyyy-dd-mm"]');
+        this.commentTextarea = page.locator('textarea');
         this.searchButton = page.getByRole('button', { name: 'Search' });
-
-        this.requiredMessage = page.locator('.oxd-input-field-error-message').first();
-
-        this.employeeNameInput = page.getByPlaceholder('Type for hints...');
-
-        this.recordsFound = page.locator('.orangehrm-horizontal-padding');
-
-        this.table = page.locator('.oxd-table');
-
-        this.formLoader = page.locator('.oxd-form-loader');
-
-        this.entitlementsTab =
-            page.getByText('Entitlements', { exact: true });
-
-        this.addEntitlementsOption =
-            page.getByText('Add Entitlements');
+        this.resetButton = page.getByRole('button', { name: 'Reset' });
+        this.applyButton = page.getByRole('button', { name: 'Apply' });
+        this.dropdownOptions = page.locator('[role="option"]');
+        this.emailInput = page.locator('input[placeholder*="Email"]');
     }
 }
+
+module.exports = { LeavePage };
