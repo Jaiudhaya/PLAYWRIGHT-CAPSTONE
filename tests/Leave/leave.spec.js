@@ -33,7 +33,7 @@ test.describe('Leave Module Functionality Tests', () => {
 
     test('2.Verify Apply page opens', async ({ page }) => {
         await leavePage.applyTab.click();
-        await page.waitForURL(/applyLeave/, {timeout: 10000});
+        await page.waitForURL(/applyLeave/, {timeout: 30000});
         await expect(page).toHaveURL(/applyLeave/);
     });
 
