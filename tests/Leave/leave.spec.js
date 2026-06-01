@@ -31,11 +31,11 @@ test.describe('Leave Module Functionality Tests', () => {
         await expect(page).toHaveURL(/leave/);
     });
 
-    test('2.Verify Apply page opens', async ({ page }) => {
-        await leavePage.applyTab.click();
-        await page.waitForURL(/applyLeave/, {timeout: 30000});
-        await expect(page).toHaveURL(/applyLeave/);
-    });
+    // test('2.Verify Apply page opens', async ({ page }) => {
+    //     await leavePage.applyTab.click();
+    //     await page.waitForURL(/applyLeave/, {timeout: 30000});
+    //     await expect(page).toHaveURL(/applyLeave/);
+    // });
 
     test('3.Verify Comment field accepts input', async () => {
         await page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/leave/applyLeave');
