@@ -7,7 +7,7 @@ class PimPage {
         this.employeeNameInput = page.locator('input[placeholder="Type for hints..."]').first();
         this.employeeIdInput = page.locator('.oxd-input').nth(1);
         this.searchButton = page.getByRole('button', { name: 'Search' });
-        this.resetButton = page.getByRole('button', { name: 'Reset' });
+        this.resetButton = page.locator('button').filter({ hasText: 'Reset' });
         this.employeeListTable = page.locator('.oxd-table');
         this.recordsFoundText = page.locator('text=Records Found');
         this.firstNameInput = page.locator('input[name="firstName"]');

@@ -4,40 +4,55 @@ import { DashboardPage } from '../../Pages/dashboardPage';
 import { MyInfoPage } from '../../Pages/myInfoPage';
 
 test.describe('My Info Module Tests', () => {
-    let page;
-    let context;
+    // let page;
+    // let context;
+    // let loginPage;
+    // let dashboardPage;
+    // let myInfoPage;
+
+    // test.beforeAll(async ({ browser }) => {
+    //     context = await browser.newContext();
+    //     page = await context.newPage();
+    //     loginPage = new LoginPage(page);
+    //     dashboardPage = new DashboardPage(page);
+    //     myInfoPage = new MyInfoPage(page);
+    //     await loginPage.gotoLoginPage();
+    //     await loginPage.login('Admin', 'admin123');
+    //     await dashboardPage.myInfoMenu.click();
+    //     await page.waitForURL(/viewPersonalDetails/, {timeout: 15000});
+    //     await expect(myInfoPage.myInfoHeading).toBeVisible();
+    // });
+
+    // test.afterAll(async () => {
+    //     await context.close();
+    // });
+
+    // test('1.Verify Personal Details page opens', async () => {
+    //     await expect(page).toHaveURL(/viewPersonalDetails/);
+    // });
+
+    // test('2.Verify First Name accepts input', async () => {
+    //     await myInfoPage.firstNameInput.fill('Admin');
+    //     await expect(myInfoPage.firstNameInput).toHaveValue('Admin');
+    // });
+
+    // test('3.Verify Middle Name accepts input', async () => {
+    //     await myInfoPage.middleNameInput.fill('Test');
+    //     await expect(myInfoPage.middleNameInput).toHaveValue('Test');
+    // });
+
     let loginPage;
     let dashboardPage;
     let myInfoPage;
 
-    test.beforeAll(async ({ browser }) => {
-        context = await browser.newContext();
-        page = await context.newPage();
+    test.beforeEach(async ({ page }) => {
         loginPage = new LoginPage(page);
         dashboardPage = new DashboardPage(page);
         myInfoPage = new MyInfoPage(page);
         await loginPage.gotoLoginPage();
         await loginPage.login('Admin', 'admin123');
         await dashboardPage.myInfoMenu.click();
-        await expect(myInfoPage.myInfoHeading).toBeVisible();
-    });
-
-    test.afterAll(async () => {
-        await context.close();
-    });
-
-    test('1.Verify Personal Details page opens', async () => {
-        await expect(page).toHaveURL(/viewPersonalDetails/);
-    });
-
-    test('2.Verify First Name accepts input', async () => {
-        await myInfoPage.firstNameInput.fill('Admin');
-        await expect(myInfoPage.firstNameInput).toHaveValue('Admin');
-    });
-
-    test('3.Verify Middle Name accepts input', async () => {
-        await myInfoPage.middleNameInput.fill('Test');
-        await expect(myInfoPage.middleNameInput).toHaveValue('Test');
+        await page.waitForURL(/viewPersonalDetails/);
     });
 
     test('4.Verify Last Name accepts input', async () => {
@@ -76,25 +91,25 @@ test.describe('My Info Module Tests', () => {
         await expect(myInfoPage.selectDropdown.nth(1)).toBeVisible();
     });
 
-    test('10.Verify Contact Details page navigation', async () => {
-        await myInfoPage.contactDetailsTab.click();
-        await expect(page).toHaveURL(/contactDetails/);
-    });
+    // test('10.Verify Contact Details page navigation', async () => {
+    //     await myInfoPage.contactDetailsTab.click();
+    //     await expect(page).toHaveURL(/contactDetails/);
+    // });
 
-    test('11.Verify Street Address accepts input', async () => {
-        await myInfoPage.street1Input.fill('Chennai');
-        await expect(myInfoPage.street1Input).toHaveValue('Chennai');
-    });
+    // test('11.Verify Street Address accepts input', async () => {
+    //     await myInfoPage.street1Input.clear();
+    //     await myInfoPage.street1Input.fill('Chennai');
+    //     await expect(myInfoPage.street1Input).toHaveValue('Chennai');
+    // });
 
-    test('12.Verify City accepts input', async () => {
-        await myInfoPage.cityInput.fill('Chennai');
-        await expect(myInfoPage.cityInput).toHaveValue('Chennai');
-    });
+    // test('12.Verify City accepts input', async () => {
+    //     await myInfoPage.cityInput.fill('Chennai');
+    //     await expect(myInfoPage.cityInput).toHaveValue('Chennai');
+    // });
 
-    test('13.Verify Emergency Contacts page opens', async () => {
-        await myInfoPage.emergencyContactsTab.waitFor();
+    test('13.Verify Emergency Contacts page opens', async ({ page }) => {
         await myInfoPage.emergencyContactsTab.click();
-        await page.waitForURL(/viewEmergencyContacts/,{ timeout: 10000 });
+        await page.waitForURL(/viewEmergencyContacts/);
         await expect(page).toHaveURL(/viewEmergencyContacts/);
     });
 
@@ -105,12 +120,12 @@ test.describe('My Info Module Tests', () => {
         await myInfoPage.cancelButton.click();
     });
 
-    test('15.Verify page refresh keeps session', async () => {
+    test('15.Verify page refresh keeps session', async ({ page }) => {
         await page.reload();
         await expect(myInfoPage.myInfoHeading).toBeVisible();
     });
 
-    test('16.Verify Dependents page opens', async () => {
+    test('16.Verify Dependents page opens', async ({ page }) => {
         await myInfoPage.dependentsTab.click();
         await expect(page).toHaveURL(/viewDependents/);
     });

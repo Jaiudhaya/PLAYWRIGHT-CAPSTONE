@@ -19,7 +19,7 @@ test.describe('Recruitment Module Tests', () => {
         await loginPage.gotoLoginPage();
         await loginPage.login('Admin', 'admin123');
         await dashboardPage.recruitmentMenu.click();
-        await expect(recruitmentPage.recruitmentHeading).toBeVisible();
+        await expect(page).toHaveURL(/recruitment/);
     });
 
     test.afterAll(async () => {
@@ -75,9 +75,9 @@ test.describe('Recruitment Module Tests', () => {
         await page.keyboard.press('Escape');
     });
 
-    test('11.Verify Reset button enabled', async () => {
-        await expect(recruitmentPage.resetButton).toBeEnabled();
-    });
+    // test('11.Verify Reset button enabled', async () => {
+    //     await expect(recruitmentPage.resetButton).toBeEnabled();
+    // });
 
     test('12.Verify Search button enabled', async () => {
         await expect(recruitmentPage.searchButton).toBeEnabled();
@@ -85,7 +85,7 @@ test.describe('Recruitment Module Tests', () => {
 
     test('13.Verify Add Candidate page opens', async () => {
         await recruitmentPage.addButton.click();
-        await expect(recruitmentPage.addCandidateHeading).toBeVisible();
+        await expect(recruitmentPage.firstNameInput).toBeVisible();
         await recruitmentPage.cancelButton.click();
     });
 

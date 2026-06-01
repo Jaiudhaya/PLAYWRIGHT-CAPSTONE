@@ -12,14 +12,14 @@ class MyInfoPage {
         this.driverLicenseInput = page.locator('.oxd-input').nth(6);
         this.contactDetailsTab = page.getByRole('link', { name: 'Contact Details' });
         this.emergencyContactsTab = page.locator('a').filter({hasText: 'Emergency Contacts'});
-        this.emergencyContactSaveButton = page.locator('form').getByRole('button', { name: 'Save' });
+        this.emergencyContactSaveButton = page.getByRole('button', { name: 'Save' }).last();
         this.qualificationsTab = page.getByRole('link', { name: 'Qualifications' });        
         this.street1Input = page.locator('.oxd-input').nth(1);
         this.cityInput = page.locator('.oxd-input').nth(3);
         this.selectDropdown = page.locator('.oxd-select-text');
         this.dropdownOptions = page.locator('[role="option"]');
         this.addButton = page.getByRole('button', { name: 'Add' }).first();
-        this.saveButton = page.getByRole('button', { name: 'Save' });
+        this.saveButton = page.getByRole('button', { name: 'Save' }).last();
         this.cancelButton = page.getByRole('button', { name: 'Cancel' });
         this.requiredMessage = page.getByText('Required').first();
         this.dependentsTab = page.getByRole('link', { name: 'Dependents' });

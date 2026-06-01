@@ -1,8 +1,10 @@
+import { expect } from '@playwright/test';
+
 class LoginPage {
     constructor(page) {
         this.page = page;
         this.usernameInput = page.locator('input[name="username"]');
-        this.passwordInput = page.locator('input[name="password"]');
+        this.passwordInput = page.locator('input[type="password"]');
         this.loginButton = page.locator('button[type="submit"]');
     }
     async gotoLoginPage() {
@@ -12,7 +14,8 @@ class LoginPage {
         await this.usernameInput.fill(username);
         await this.passwordInput.fill(password);
         await this.loginButton.click();
-        await this.page.waitForURL(/dashboard/, {timeout: 30000});
+        await this.page.waitForLoadState('networkidle');
+        await expect(this.page.locator('.oxd-sidepanel')).toBeVisible({timeout: 20000});
     }
 }
 

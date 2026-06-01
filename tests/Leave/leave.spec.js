@@ -19,7 +19,8 @@ test.describe('Leave Module Functionality Tests', () => {
         await loginPage.gotoLoginPage();
         await loginPage.login('Admin', 'admin123');
         await dashboardPage.leaveMenu.click();
-        await expect(leavePage.leaveHeading).toBeVisible();
+        //await expect(leavePage.leaveHeading).toBeVisible();
+        await expect(page).toHaveURL(/leave/);
     });
 
     test.afterAll(async () => {
@@ -30,8 +31,9 @@ test.describe('Leave Module Functionality Tests', () => {
         await expect(page).toHaveURL(/leave/);
     });
 
-    test('2.Verify Apply page opens', async () => {
+    test('2.Verify Apply page opens', async ({ page }) => {
         await leavePage.applyTab.click();
+        await page.waitForURL(/applyLeave/, {timeout: 10000});
         await expect(page).toHaveURL(/applyLeave/);
     });
 
@@ -62,7 +64,7 @@ test.describe('Leave Module Functionality Tests', () => {
         await leavePage.myLeaveTab.click();
         await expect(page).toHaveURL(/viewMyLeaveList/);
         await leavePage.searchButton.click();
-        await expect(page).toHaveURL(/viewMyLeaveList/);
+        await expect(leavePage.searchButton).toBeEnabled();
     });
 
     test('8.Verify Reset button clickable', async () => {

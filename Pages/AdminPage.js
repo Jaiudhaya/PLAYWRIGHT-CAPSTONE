@@ -1,7 +1,7 @@
 class AdminPage {
     constructor(page) {
         this.page = page;
-        this.adminHeading = page.locator('.oxd-topbar-header-breadcrumb-module');
+        this.adminHeading = page.getByRole('heading', { name: 'Admin' });
         this.usernameInput = page.locator('.oxd-input').nth(1);
         this.userRoleDropdown = page.locator('.oxd-select-text').nth(0);
         this.employeeNameInput = page.getByPlaceholder('Type for hints...');

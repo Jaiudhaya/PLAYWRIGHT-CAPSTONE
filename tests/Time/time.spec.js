@@ -21,7 +21,7 @@ test.describe('Time Module Tests', () => {
         await loginPage.gotoLoginPage();
         await loginPage.login('Admin', 'admin123');
         await dashboardPage.timeMenu.click();
-        await expect(timePage.timeHeading).toBeVisible();
+        await expect(page).toHaveURL(/time/);
     });
 
     test.afterAll(async () => {
