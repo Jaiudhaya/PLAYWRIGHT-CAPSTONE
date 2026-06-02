@@ -114,24 +114,15 @@ test('3. Invalid password', async ({ page }) => {
     await expect(username).toHaveValue('Admin');
   });
 
-  // test('16.Password field accepts input', async ({ page }) => {
-  //   await gotoLogin(page);
-  //   const password = page.getByRole('textbox', { name: 'Password' });
-  //   await password.fill('admin123');
-  //   await expect(password).toHaveValue('admin123');
-  // });
-
-  test('17.Password field masked', async ({ page }) => {
+  test('16.Password field masked', async ({ page }) => {
     await gotoLogin(page);
     const password = page.locator('input[type="password"]');
     await expect(password).toHaveAttribute('type', 'password');
   });
 
-  test('18.Refreshes keeps user on login page', async ({ page }) => {
+  test('17.Refreshes keeps user on login page', async ({ page }) => {
     await gotoLogin(page);
     await page.reload();
     await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
   });
 });
-
-//works
