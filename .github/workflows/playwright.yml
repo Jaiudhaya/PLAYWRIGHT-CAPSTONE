@@ -133,6 +133,8 @@ jobs:
         merge-multiple: true
 
         path: allure-results
+
+      continue-on-error: true
  
     - name: Check Allure Results
 
