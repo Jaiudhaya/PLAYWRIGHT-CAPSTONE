@@ -42,8 +42,12 @@ app.get('/api/summary', (req, res) => {
   }
 });
 
+app.use('/report', express.static(path.join(__dirname, 'playwright-report')));
+
 app.get('/', (req, res) => {
-  res.send("SERVER IS WORKING 🚀");
+  res.sendFile(
+    path.join(__dirname, 'playwright-report', 'index.html')
+  );
 });
 
 app.listen(PORT, () => {
