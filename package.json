@@ -8,7 +8,10 @@
   },
   "scripts": {
     "test:ci": "playwright test",
-    "allure:generate": "allure generate allure-results -o allure-report --clean"
+    "allure:generate": "allure generate allure-results -o allure-report --clean",
+    "allure:open": "allure open allure-report",
+    "allure:clear": "rm -rf allure-results allure-report playwright-report",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
