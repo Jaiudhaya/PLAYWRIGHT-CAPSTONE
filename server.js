@@ -43,16 +43,7 @@ app.get('/api/summary', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  const filePath = path.join(__dirname, 'allure-report', 'index.html');
-
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.send(`
-      <h2>Report not found</h2>
-      <p>Allure report is not generated on server.</p>
-    `);
-  }
+  res.send("SERVER IS WORKING 🚀");
 });
 
 app.listen(PORT, () => {
