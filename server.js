@@ -46,7 +46,7 @@ app.use('/report', express.static(path.join(__dirname, 'playwright-report')));
 
 app.get('/', (req, res) => {
   res.sendFile(
-    path.join(__dirname, 'playwright-report', 'index.html')
+    path.join(__dirname, 'index.html')
   );
 });
 
