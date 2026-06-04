@@ -1,25 +1,24 @@
 {
   "name": "capstone",
   "version": "1.0.0",
+  "type" : "module",
   "description": "This project is an end-to-end automation testing framework being developed using Playwright.  \r The goal is to automate multiple web services and validate functionality across different browsers.",
   "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "test:ci": "playwright test",
-    "allure:generate": "allure generate allure-results -o allure-report --clean"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Jaiudhaya/PLAYWRIGHT-CAPSTONE.git"
+    "allure:generate": "allure generate allure-results -o allure-report --clean",
+    "allure:open": "allure open allure-report",
+    "allure:clear": "rm -rf allure-results allure-report playwright-report",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Jaiudhaya/PLAYWRIGHT-CAPSTONE/issues"
+   "dependencies": {
+    "@playwright/test": "^1.60.0",
+    "allure-playwright": "^3.9.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   },
   "homepage": "https://github.com/Jaiudhaya/PLAYWRIGHT-CAPSTONE#readme",
   "devDependencies": {

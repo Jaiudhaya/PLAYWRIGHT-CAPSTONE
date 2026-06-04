@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../../pages/loginPage');
-const { DashboardPage } = require('../../pages/dashboardPage');
-const { AdminPage } = require('../../pages/adminPage');
+const { LoginPage } = require('../../Pages/loginPage');
+const { DashboardPage } = require('../../Pages/dashboardPage');
+const { AdminPage } = require('../../Pages/AdminPage');
 
 let loginPage;
 let dashboardPage;

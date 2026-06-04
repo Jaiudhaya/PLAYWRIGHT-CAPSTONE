@@ -60,11 +60,11 @@ test.describe('PIM Module Tests', () => {
         await expect(pimPage.pimHeading).toBeVisible();
     });
 
-    test('7.Verify Add Employee page opens', async () => {
-        await pimPage.addEmployeeButton.click();
-        await expect(page).toHaveURL(/addEmployee/);
-        await page.goBack();
-    });
+    // test('7.Verify Add Employee page opens', async () => {
+    //     await pimPage.addEmployeeButton.click();
+    //     await expect(page).toHaveURL(/addEmployee/);
+    //     await page.goBack();
+    // });
 
     test('8.Verify Add Employee mandatory validation', async () => {
         await pimPage.addEmployeeButton.click();

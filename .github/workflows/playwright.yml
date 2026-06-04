@@ -1,210 +1,109 @@
-name: Playwright Tests & Allure Report
+name: Playwright Tests CI/CD
 
 on:
-
   push:
-
-    branches:
-
-      - "**"
-
-  pull_request:
-
     branches: [ main, master ]
-
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
- 
-permissions:
 
+permissions:
   contents: write
 
-  pages: write
-
-  id-token: write
- 
 jobs:
-
   test:
-
-    timeout-minutes: 60
-
+    name: Run Playwright Tests (Shard ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
+    timeout-minutes: 20
     runs-on: ubuntu-latest
-
     strategy:
-
       fail-fast: false
-
       matrix:
-
-        shard_index: [1, 2, 3]
-
-    env:
-
-      CI: true
- 
+        shardIndex: [1, 2, 3]
+        shardTotal: [3]
     steps:
-
-    - name: Checkout Repository
-
+    - name: Checkout repository
       uses: actions/checkout@v4
- 
-    - name: Setup Node.js
 
+    - name: Set up Node.js
       uses: actions/setup-node@v4
-
       with:
+        node-version: 18
+        cache: 'npm'
 
-        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci || npm install
 
-        cache: npm
- 
-    - name: Install Dependencies
-
-      run: npm ci
- 
-    - name: Install Playwright Browsers
-
+    - name: Install Playwright browsers and system dependencies
       run: npx playwright install --with-deps
- 
-    - name: Run Playwright Tests
 
-      run: npm run test:ci -- --shard=${{ matrix.shard_index }}/3
+    - name: Run tests with sharding
+      run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
-      continue-on-error: true
- 
-    - name: Upload Allure Raw Results (Shard)
-
+    - name: Upload allure-results artifact
       if: always()
-
       uses: actions/upload-artifact@v4
-
       with:
+        name: allure-results-${{ matrix.shardIndex }}
+        path: allure-results/
+        retention-days: 2
 
-        name: allure-results-shard-${{ matrix.shard_index }}
-
-        path: allure-results
-
-        if-no-files-found: warn
-
-        retention-days: 14
- 
-  report:
-
-    if: ${{ always() }}
-
-    needs: [test]
-
-    timeout-minutes: 30
-
+  merge-and-deploy:
+    name: Merge Results & Deploy
+    needs: test
+    if: always()
     runs-on: ubuntu-latest
-
     steps:
-
-    - name: Checkout Repository
-
+    - name: Checkout repository
       uses: actions/checkout@v4
- 
-    - name: Setup Node.js
 
+    - name: Set up Node.js
       uses: actions/setup-node@v4
-
       with:
+        node-version: 18
+        cache: 'npm'
 
-        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci || npm install
 
-        cache: npm
- 
-    - name: Install Dependencies
+    - name: Create allure-results directory
+      run: mkdir -p allure-results
 
-      run: npm ci
- 
-    - name: Clean Allure Results Directory
-
-      run: rm -rf allure-results allure-report
- 
-    - name: Download Allure Raw Results
-
+    - name: Download all allure-results artifacts
       uses: actions/download-artifact@v4
-
       with:
-
-        pattern: allure-results-shard-*
-
+        path: temp-results/
+        pattern: allure-results-*
         merge-multiple: true
 
-        path: allure-results
-
-      continue-on-error: true
- 
-    - name: Check Allure Results
-
+    - name: Copy downloaded results to allure-results
       run: |
-
-        if [ -d allure-results ]; then
-
-          echo "Files in allure-results:"
-
-          find allure-results -type f | head -20
-
-          echo "Total files: $(find allure-results -type f | wc -l)"
-
-        else
-
-          echo "No allure-results directory found!"
-
+        if [ -d "temp-results" ]; then
+          cp -r temp-results/* allure-results/ || true
         fi
- 
+        ls -la allure-results/
+
     - name: Generate Allure Report
-
-      run: npm run allure:generate -- --clean
-
-      continue-on-error: true
- 
-    - name: Verify Allure Report
-
       run: |
+        npm run allure:generate
 
-        if [ -d allure-report ]; then
+    - name: Prepare Deployment Directory
+      run: |
+        mkdir -p dist
+        cp server.js dist/
+        cp package.json dist/
+        cp package-lock.json dist/ || true
+        cp -r public dist/
+        cp -r allure-report dist/
 
-          echo "Allure report generated successfully"
-
-          ls -la allure-report/
-
-        else
-
-          echo "Warning: No allure-report directory created"
-
-        fi
- 
-    - name: Upload Allure HTML Report
-
-      if: always()
-
-      uses: actions/upload-artifact@v4
-
-      with:
-
-        name: allure-report
-
-        path: allure-report
-
-        if-no-files-found: warn
-
-        retention-days: 14
- 
-    - name: Deploy to GitHub Pages
-
-      if: always() && github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
-
-      uses: peaceiris/actions-gh-pages@v3
-
-      with:
-
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
-        publish_branch: gh-pages
-
-        publish_dir: allure-report
-
-      continue-on-error: true
- 
+    - name: Deploy to allure-report branch
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd dist
+        git init
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Deploy Allure report and dashboard server"
+        git push --force https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:allure-report
