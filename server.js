@@ -12,33 +12,44 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// API Endpoint to get Allure summary data
 app.get('/api/summary', (req, res) => {
-  const summaryPath = path.join(__dirname, 'allure-report', 'widgets', 'summary.json');
+  const summaryPath = path.join(
+    __dirname,
+    'allure-report',
+    'widgets',
+    'summary.json'
+  );
+
   if (fs.existsSync(summaryPath)) {
     try {
-      const data = fs.readFileSync(summaryPath, 'utf8');
+      const data = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+
       res.json({
         available: true,
-        data: JSON.parse(data)
+        data
       });
-    } catch (err) {
-      res.status(500).json({ available: false, error: 'Failed to parse report summary' });
+    } catch (error) {
+      res.status(500).json({
+        available: false,
+        error: 'Failed to parse report summary'
+      });
     }
   } else {
     res.json({
       available: false,
-      message: 'No test execution report has been compiled yet.'
+      message: 'No test execution report found.'
     });
   }
 });
 
-// Serve static Allure Report files
 app.use('/report', express.static(path.join(__dirname, 'allure-report')));
 
-// Serve dashboard frontend
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, 'allure-report', 'index.html')
+  );
+});
 
 app.listen(PORT, () => {
-  console.log(`Express dashboard server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
